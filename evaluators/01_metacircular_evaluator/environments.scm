@@ -4,6 +4,7 @@
   (let ((initial-env (extend-environment '() '() the-empty-environment)))
     (define-variable! 'true true initial-env)
     (define-variable! 'false false initial-env)
+    (define-variable! '+ + initial-env)
     initial-env))
 
 (define (extend-environment vars vals base-env)

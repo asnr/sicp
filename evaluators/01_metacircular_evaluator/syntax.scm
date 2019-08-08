@@ -8,6 +8,8 @@
 
 (define (quoted? exp)
   (eq? (car exp) 'quote))
+(define (text-of-quotation exp)
+  (cadr exp))
 
 (define (definition? exp)
   (tagged-list? exp 'define))
@@ -15,8 +17,9 @@
 (define (definition-variable exp) (cadr exp))
 (define (definition-value exp) (caddr exp))
 
-(define (text-of-quotation exp)
-  (cadr exp))
+(define (application? exp) (pair? exp))
+(define (operator exp) (car exp))
+(define (operands exp) (cdr exp))
 
 (define (tagged-list? exp tag)
   (and (pair? exp)

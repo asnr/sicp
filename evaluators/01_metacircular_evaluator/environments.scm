@@ -1,15 +1,28 @@
 (define the-empty-environment '())
 
 (define (setup-environment)
-  (let ((initial-env (extend-environment '() '() the-empty-environment)))
+  (let ((initial-env (extend-environment primitive-procedure-names
+                                         primitive-procedure-objects
+                                         the-empty-environment)))
     (define-variable! 'true true initial-env)
     (define-variable! 'false false initial-env)
-    (define-variable! '+ + initial-env)
     initial-env))
 
 (define (extend-environment vars vals base-env)
   (let ((new-frame (cons vars vals)))
     (cons new-frame base-env)))
+
+(define primitive-procedures
+  (list (list 'car car)
+        (list 'cdr cdr)
+        (list 'cons cons)
+        (list 'null? null?)
+        (list '+ +)))
+(define primitive-procedure-names
+  (map car primitive-procedures))
+(define primitive-procedure-objects
+  (map (lambda (proc) (list 'primitive (cadr proc)))
+       primitive-procedures))
 
 (define (lookup-variable-value variable-symbol env)
 

@@ -17,7 +17,7 @@
 
 (define (metacircular-apply proc argument-list)
   ;; Only handles primitive functions (evaluated in MIT Scheme)
-  (apply proc argument-list))
+  (apply (cadr proc) argument-list))
 
 (define (list-of-values operand-exps env)
   (map (lambda (operand-exp) (metacircular-eval operand-exp env))

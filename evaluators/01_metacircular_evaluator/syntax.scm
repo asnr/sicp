@@ -17,6 +17,11 @@
 (define (definition-variable exp) (cadr exp))
 (define (definition-value exp) (caddr exp))
 
+(define (if? exp) (tagged-list? exp 'if))
+(define (if-predicate exp) (cadr exp))
+(define (if-consequent exp) (caddr exp))
+(define (if-alternative exp) (cadddr exp))
+
 (define (application? exp) (pair? exp))
 (define (operator exp) (car exp))
 (define (operands exp) (cdr exp))

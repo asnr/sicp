@@ -17,7 +17,10 @@
         (list 'cdr cdr)
         (list 'cons cons)
         (list 'null? null?)
-        (list '+ +)))
+        (list '+ +)
+        (list 'eq? eq?)
+        (list '< <)
+        (list '> >)))
 (define primitive-procedure-names
   (map car primitive-procedures))
 (define primitive-procedure-objects

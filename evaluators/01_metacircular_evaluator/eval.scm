@@ -38,8 +38,12 @@
       (let ((new-env (extend-environment (proc-parameters proc-object)
                                          argument-list
                                          (proc-base-env proc-object))))
-        ;; Only support single statement lambdas for now
-        (metacircular-eval (proc-body proc-object) new-env))))
+        (define (eval-expression-list exps env)
+          (let ((result (metacircular-eval (car exps) env)))
+            (if (null? (cdr exps))
+                result
+                (eval-expression-list (cdr exps) env))))
+        (eval-expression-list (proc-body proc-object) new-env))))
 
 (define (list-of-values operand-exps env)
   (map (lambda (operand-exp) (metacircular-eval operand-exp env))

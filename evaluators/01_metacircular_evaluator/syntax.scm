@@ -24,8 +24,7 @@
 
 (define (lambda? exp) (tagged-list? exp 'lambda))
 (define (lambda-parameters exp) (cadr exp))
-;; Only single statement lambdas for now
-(define (lambda-body exp) (caddr exp))
+(define (lambda-body exp) (cddr exp))
 
 (define (application? exp) (pair? exp))
 (define (operator exp) (car exp))

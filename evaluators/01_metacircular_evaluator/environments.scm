@@ -31,19 +31,26 @@
 
   (define (lookup-value-in-frame names values)
     (if (null? names)
-        (error "Variable name not found" variable-symbol)
+        '()
         (let ((curr-name (car names))
               (curr-value (car values)))
           (if (eq? curr-name variable-symbol)
-              curr-value
+              (list curr-value)
               (lookup-value-in-frame (cdr names) (cdr values))))
         )
     )
 
   (let* ((frame (car env))
          (names (car frame))
-         (values (cdr frame)))
-    (lookup-value-in-frame names values))
+         (values (cdr frame))
+         (lookup-result (lookup-value-in-frame names values)))
+    (if (null? lookup-result)
+        (let ((parent-env (cdr env)))
+          (if (null? parent-env)
+              (error "Variable name not found" variable-symbol)
+              (lookup-variable-value variable-symbol parent-env)))
+        (car lookup-result))
+    )
   )
 
 ;; Redefining the same variable will shadow the original entry, not modify it

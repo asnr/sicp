@@ -1,4 +1,3 @@
-(load "environments.scm")
 (load "driver.scm")
 (load "eval.scm")
 

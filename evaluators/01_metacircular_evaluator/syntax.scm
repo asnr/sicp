@@ -22,6 +22,11 @@
 (define (if-consequent exp) (caddr exp))
 (define (if-alternative exp) (cadddr exp))
 
+(define (lambda? exp) (tagged-list? exp 'lambda))
+(define (lambda-parameters exp) (cadr exp))
+;; Only single statement lambdas for now
+(define (lambda-body exp) (caddr exp))
+
 (define (application? exp) (pair? exp))
 (define (operator exp) (car exp))
 (define (operands exp) (cdr exp))

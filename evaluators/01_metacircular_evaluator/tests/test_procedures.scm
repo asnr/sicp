@@ -2,6 +2,11 @@
   (define (my-add x y) (+ x y))
   (assert-eq 71 (my-add 68 3)))
 
+(define (test-lexical-scope)
+  (define (make-adder x) (lambda (y) (+ x y)))
+  (define x 100)
+  (assert-eq 3 ((make-adder 1) 2)))
+
 (define (run-tests tests)
   (define failures (collect-results '() tests))
   (if (null? failures)
@@ -25,4 +30,4 @@
       (list 'success)
       (list 'failure "Expected two values to be equal" expected computed)))
 
-(run-tests (list test-simple-compound-procedure))
+(run-tests (list test-simple-compound-procedure test-lexical-scope))

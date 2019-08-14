@@ -17,7 +17,12 @@
          (error "Unknown expression type: EVAL" exp))))
 
 (define (eval-definition exp env)
-  (define-variable! (definition-variable exp) (definition-value exp) env)
+  (if (definition-procedure? exp)
+      (define-variable!
+        (definition-proc-name exp)
+        (make-procedure (definition-parameters exp) (definition-body exp) env)
+        env)
+      (define-variable! (definition-variable exp) (definition-value exp) env))
   'ok)
 
 (define (eval-if exp env)

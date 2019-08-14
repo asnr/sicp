@@ -13,7 +13,10 @@
 
 (define (definition? exp)
   (tagged-list? exp 'define))
-;; Doesn't handle defining functions
+(define (definition-procedure? exp) (pair? (cadr exp)))
+(define (definition-proc-name exp) (car (cadr exp)))
+(define (definition-parameters exp) (cdr (cadr exp)))
+(define (definition-body exp) (cddr exp))
 (define (definition-variable exp) (cadr exp))
 (define (definition-value exp) (caddr exp))
 

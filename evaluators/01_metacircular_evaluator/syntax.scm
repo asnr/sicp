@@ -12,7 +12,13 @@
   (cadr exp))
 
 (define (definition? exp)
-  (tagged-list? exp 'define))
+  (let ((is-definition (tagged-list? exp 'define)))
+    (if (and is-definition
+             (definition-value? exp)
+             (not (eq? (length exp) 3)))
+        (error "DEFINITION SYNTAX: value definition has length" (length exp)))
+    is-definition))
+(define (definition-value? exp) (symbol? (cadr exp)))
 (define (definition-procedure? exp) (pair? (cadr exp)))
 (define (definition-proc-name exp) (car (cadr exp)))
 (define (definition-parameters exp) (cdr (cadr exp)))

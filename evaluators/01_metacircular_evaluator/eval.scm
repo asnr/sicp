@@ -10,6 +10,7 @@
         ((lambda? exp) (make-procedure (lambda-parameters exp)
                                        (lambda-body exp)
                                        env))
+        ((begin? exp) (eval-sequence (begin-actions exp) env))
         ((application? exp)
          (metacircular-apply (metacircular-eval (operator exp) env)
                              (list-of-values (operands exp) env)))
@@ -33,6 +34,12 @@
       (metacircular-eval (if-consequent exp) env)
       (metacircular-eval (if-alternative exp) env)))
 
+(define (eval-sequence exps env)
+  (let ((result (metacircular-eval (car exps) env)))
+    (if (null? (cdr exps))
+        result
+        (eval-sequence (cdr exps) env))))
+
 (define (make-procedure parameters body env)
   (list 'compound parameters body env))
 
@@ -46,12 +53,7 @@
       (let ((new-env (extend-environment (proc-parameters proc-object)
                                          argument-list
                                          (proc-base-env proc-object))))
-        (define (eval-expression-list exps env)
-          (let ((result (metacircular-eval (car exps) env)))
-            (if (null? (cdr exps))
-                result
-                (eval-expression-list (cdr exps) env))))
-        (eval-expression-list (proc-body proc-object) new-env))))
+        (eval-sequence (proc-body proc-object) new-env))))
 
 (define (list-of-values operand-exps env)
   (map (lambda (operand-exp) (metacircular-eval operand-exp env))

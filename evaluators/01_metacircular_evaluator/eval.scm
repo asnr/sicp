@@ -22,7 +22,10 @@
         (definition-proc-name exp)
         (make-procedure (definition-parameters exp) (definition-body exp) env)
         env)
-      (define-variable! (definition-variable exp) (definition-value exp) env))
+      (define-variable!
+        (definition-variable exp)
+        (metacircular-eval (definition-value exp) env)
+        env))
   'ok)
 
 (define (eval-if exp env)

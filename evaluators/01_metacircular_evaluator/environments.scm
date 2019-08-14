@@ -13,9 +13,11 @@
     (cons new-frame base-env)))
 
 (define primitive-procedures
-  (list (list 'car car)
+  (list (list 'display display)
+        (list 'car car)
         (list 'cdr cdr)
         (list 'cons cons)
+        (list 'list list)
         (list 'null? null?)
         (list '+ +)
         (list 'eq? eq?)

@@ -21,6 +21,7 @@
         (list 'null? null?)
         (list '+ +)
         (list 'eq? eq?)
+        (list 'equal? equal?)
         (list '< <)
         (list '> >)))
 (define primitive-procedure-names

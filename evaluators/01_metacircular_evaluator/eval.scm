@@ -11,6 +11,7 @@
                                        (lambda-body exp)
                                        env))
         ((begin? exp) (eval-sequence (begin-actions exp) env))
+        ((cond? exp) (metacircular-eval (cond->if exp) env))
         ((application? exp)
          (metacircular-apply (metacircular-eval (operator exp) env)
                              (list-of-values (operands exp) env)))
@@ -35,6 +36,24 @@
       (if (if-has-alternative? exp)
           (metacircular-eval (if-alternative exp) env)))
   )
+
+(define (cond->if exp)
+  (define (convert branches)
+    (let* ((curr-branch (car branches))
+           (branch-predicate (cond-branch-predicate curr-branch))
+           (tail-branches (cdr branches)))
+      (if (null? tail-branches)
+          (list 'if
+                (if (eq? branch-predicate 'else)
+                    'true
+                    branch-predicate)
+                (cond-branch-value curr-branch))
+          (list 'if
+                branch-predicate
+                (cond-branch-value curr-branch)
+                (convert tail-branches))))
+    )
+  (convert (cond-branches exp)))
 
 (define (eval-sequence exps env)
   (let ((result (metacircular-eval (car exps) env)))

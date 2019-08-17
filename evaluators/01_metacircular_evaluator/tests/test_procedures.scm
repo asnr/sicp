@@ -10,6 +10,28 @@
   (define x 100)
   (assert-eq 3 ((make-adder 1) 2)))
 
+(define (test-cond-simple-take-first-branch)
+  (define x "foo")
+  (assert-eq 'first (cond ((equal? x "foo") 'first)
+                          ((equal? x "bar") 'second)))
+  )
+
+(define (test-cond-simple-take-second-branch)
+  (define x "bar")
+  (assert-eq 'second (cond ((equal? x "foo") 'first)
+                           ((equal? x "bar") 'second)))
+  )
+
+(define (test-cond-else)
+  (define x 30)
+  (assert-eq 'else (cond ((eq? x 20) 'first)
+                         ((< x 20) 'second)
+                         (else 'else)))
+  )
+
+(define (test-cond-no-branch-is-true)
+  (assert-eq '#!unspecific (cond (false 1))))
+
 (define (run-tests tests)
   (define failures (collect-results '() tests))
   (if (null? failures)
@@ -36,4 +58,8 @@
 (run-tests (list test-if-no-alternative
                  test-simple-compound-procedure
                  test-lexical-scope
+                 test-cond-simple-take-first-branch
+                 test-cond-simple-take-second-branch
+                 test-cond-else
+                 test-cond-no-branch-is-true
                  ))

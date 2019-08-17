@@ -39,6 +39,11 @@
 (define (begin? exp) (tagged-list? exp 'begin))
 (define (begin-actions exp) (cdr exp))
 
+(define (cond? exp) (tagged-list? exp 'cond))
+(define (cond-branches exp) (cdr exp))
+(define (cond-branch-predicate branch-exp) (car branch-exp))
+(define (cond-branch-value branch-exp) (cadr branch-exp))
+
 (define (application? exp) (pair? exp))
 (define (operator exp) (car exp))
 (define (operands exp) (cdr exp))

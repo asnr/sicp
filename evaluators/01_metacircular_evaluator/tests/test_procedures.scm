@@ -1,3 +1,6 @@
+(define (test-if-no-alternative)
+  (assert-eq '#!unspecific (if false 1)))
+
 (define (test-simple-compound-procedure)
   (define (my-add x y) (+ x y))
   (assert-eq 71 (my-add 68 3)))
@@ -30,4 +33,7 @@
       (list 'success)
       (list 'failure "Expected two values to be equal" expected computed)))
 
-(run-tests (list test-simple-compound-procedure test-lexical-scope))
+(run-tests (list test-if-no-alternative
+                 test-simple-compound-procedure
+                 test-lexical-scope
+                 ))

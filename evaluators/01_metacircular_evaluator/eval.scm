@@ -32,7 +32,9 @@
 (define (eval-if exp env)
   (if (metacircular-eval (if-predicate exp) env)
       (metacircular-eval (if-consequent exp) env)
-      (metacircular-eval (if-alternative exp) env)))
+      (if (if-has-alternative? exp)
+          (metacircular-eval (if-alternative exp) env)))
+  )
 
 (define (eval-sequence exps env)
   (let ((result (metacircular-eval (car exps) env)))

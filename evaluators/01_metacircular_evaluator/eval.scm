@@ -6,6 +6,7 @@
         ((variable? exp) (lookup-variable-value exp env))
         ((quoted? exp) (text-of-quotation exp))
         ((definition? exp) (eval-definition exp env))
+        ((assignment? exp) (eval-assignment exp env))
         ((if? exp) (eval-if exp env))
         ((lambda? exp) (make-procedure (lambda-parameters exp)
                                        (lambda-body exp)
@@ -29,6 +30,11 @@
         (metacircular-eval (definition-value exp) env)
         env))
   'ok)
+
+(define (eval-assignment exp env)
+  (set-variable-most-recent-scope! (assignment-variable exp)
+                                   (metacircular-eval (assignment-value exp) env)
+                                   env))
 
 (define (eval-if exp env)
   (if (metacircular-eval (if-predicate exp) env)

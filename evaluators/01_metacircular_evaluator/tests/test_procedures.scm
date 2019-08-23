@@ -32,6 +32,26 @@
 (define (test-cond-no-branch-is-true)
   (assert-eq '#!unspecific (cond (false 1))))
 
+(define (test-set!)
+  (define x 199)
+  (set! x 299)
+  (assert-eq 299 x))
+
+(define (test-set!-returns-old-value)
+  (define x -1)
+  (assert-eq -1 (set! x -2)))
+
+(define (test-set!-expression-as-value)
+  (define x 77)
+  (set! x (+ 77 77))
+  (assert-eq 154 x))
+
+(define (test-set!-parent-scope)
+  (define x 'outer-scope-original)
+  (define (change-outer-variable) (set! x 'outer-scope-new))
+  (change-outer-variable)
+  (assert-eq 'outer-scope-new x))
+
 (define (run-tests tests)
   (define failures (collect-results '() tests))
   (if (null? failures)
@@ -62,4 +82,8 @@
                  test-cond-simple-take-second-branch
                  test-cond-else
                  test-cond-no-branch-is-true
+                 test-set!
+                 test-set!-returns-old-value
+                 test-set!-expression-as-value
+                 test-set!-parent-scope
                  ))

@@ -11,6 +11,10 @@
 (define (text-of-quotation exp)
   (cadr exp))
 
+(define (assignment? exp) (tagged-list? exp 'set!))
+(define (assignment-variable exp) (cadr exp))
+(define (assignment-value exp) (caddr exp))
+
 (define (definition? exp)
   (let ((is-definition (tagged-list? exp 'define)))
     (if (and is-definition

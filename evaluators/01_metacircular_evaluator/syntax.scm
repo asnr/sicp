@@ -39,6 +39,9 @@
 (define (and? exp) (tagged-list? exp 'and))
 (define (and-predicates exp) (cdr exp))
 
+(define (or? exp) (tagged-list? exp 'or))
+(define (or-predicates exp) (cdr exp))
+
 (define (lambda? exp) (tagged-list? exp 'lambda))
 (define (lambda-parameters exp) (cadr exp))
 (define (lambda-body exp) (cddr exp))

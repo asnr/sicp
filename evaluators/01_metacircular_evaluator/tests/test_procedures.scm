@@ -63,6 +63,17 @@
   (and false (set! x 'changed-in-and))
   (assert-eq 'before-and x))
 
+(define (test-or-single-predicate)
+  (assert-eq true (or true)))
+
+(define (test-or-two-predicates)
+  (assert-eq true (or false true)))
+
+(define (test-or-only-evaluates-necessary-branches)
+  (define x 'before-or)
+  (or true (set! x 'changed-in-or))
+  (assert-eq 'before-or x))
+
 (define (run-tests tests)
   (define failures (collect-results '() tests))
   (if (null? failures)
@@ -100,4 +111,7 @@
                  test-and-single-predicate
                  test-and-two-predicates
                  test-and-only-evaluates-necessary-branches
+                 test-or-single-predicate
+                 test-or-two-predicates
+                 test-or-only-evaluates-necessary-branches
                  ))

@@ -9,6 +9,7 @@
         ((assignment? exp) (eval-assignment exp env))
         ((if? exp) (eval-if exp env))
         ((and? exp) (metacircular-eval (and->if exp) env))
+        ((or? exp) (metacircular-eval (or->if exp) env))
         ((lambda? exp) (make-procedure (lambda-parameters exp)
                                        (lambda-body exp)
                                        env))
@@ -52,6 +53,15 @@
           curr-predicate
           (list 'if curr-predicate (convert tail) 'false))))
   (convert (and-predicates exp)))
+
+(define (or->if exp)
+  (define (convert predicates)
+    (let ((curr-predicate (car predicates))
+          (tail (cdr predicates)))
+      (if (null? tail)
+          curr-predicate
+          (list 'if curr-predicate 'true (convert tail)))))
+  (convert (or-predicates exp)))
 
 (define (cond->if exp)
   (define (convert branches)

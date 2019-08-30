@@ -52,6 +52,17 @@
   (change-outer-variable)
   (assert-eq 'outer-scope-new x))
 
+(define (test-and-single-predicate)
+  (assert-eq true (and true)))
+
+(define (test-and-two-predicates)
+  (assert-eq false (and true false)))
+
+(define (test-and-only-evaluates-necessary-branches)
+  (define x 'before-and)
+  (and false (set! x 'changed-in-and))
+  (assert-eq 'before-and x))
+
 (define (run-tests tests)
   (define failures (collect-results '() tests))
   (if (null? failures)
@@ -86,4 +97,7 @@
                  test-set!-returns-old-value
                  test-set!-expression-as-value
                  test-set!-parent-scope
+                 test-and-single-predicate
+                 test-and-two-predicates
+                 test-and-only-evaluates-necessary-branches
                  ))

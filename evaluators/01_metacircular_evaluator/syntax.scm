@@ -36,6 +36,9 @@
 (define (if-has-alternative? exp) (> (length exp) 3))
 (define (if-alternative exp) (cadddr exp))
 
+(define (and? exp) (tagged-list? exp 'and))
+(define (and-predicates exp) (cdr exp))
+
 (define (lambda? exp) (tagged-list? exp 'lambda))
 (define (lambda-parameters exp) (cadr exp))
 (define (lambda-body exp) (cddr exp))

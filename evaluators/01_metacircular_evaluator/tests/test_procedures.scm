@@ -74,6 +74,11 @@
   (or true (set! x 'changed-in-or))
   (assert-eq 'before-or x))
 
+(define (test-let)
+  (assert-eq 'bound-in-let
+             (let ((x 'bound-in-let))
+               x)))
+
 (define (run-tests tests)
   (define failures (collect-results '() tests))
   (if (null? failures)
@@ -84,7 +89,8 @@
   (if (null? tests)
       failures-so-far
       (begin
-        (define test-result ((car tests)))
+        (define test (car tests))
+        (define test-result (test))
         (if (test-successful? test-result)
             (collect-results failures-so-far (cdr tests))
             (collect-results (cons test-result failures-so-far) (cdr tests))))))
@@ -114,4 +120,5 @@
                  test-or-single-predicate
                  test-or-two-predicates
                  test-or-only-evaluates-necessary-branches
+                 test-let
                  ))

@@ -10,6 +10,7 @@
         ((if? exp) (eval-if exp env))
         ((and? exp) (metacircular-eval (and->if exp) env))
         ((or? exp) (metacircular-eval (or->if exp) env))
+        ((let? exp) (metacircular-eval (let->lambda-application exp) env))
         ((lambda? exp) (make-procedure (lambda-parameters exp)
                                        (lambda-body exp)
                                        env))
@@ -80,6 +81,13 @@
                 (convert tail-branches))))
     )
   (convert (cond-branches exp)))
+
+(define (let->lambda-application exp)
+  (let* ((list-of-symbols-to-bind (map car (let-bindings exp)))
+         (lambda-header (list 'lambda list-of-symbols-to-bind))
+         (lambda-exp (append lambda-header (lambda-body exp)))
+         (list-of-values-to-bind (map cadr (let-bindings exp))))
+    (append (list lambda-exp) list-of-values-to-bind)))
 
 (define (eval-sequence exps env)
   (let ((result (metacircular-eval (car exps) env)))
